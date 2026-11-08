@@ -62,7 +62,37 @@ fun DemoScreen(modifier: Modifier = Modifier) {
 
         Button(
             onClick = {
+                val n = inputText.toIntOrNull()
 
+                if (n == null || n <= 0) {
+                    resultText = "Ошибка! Введите натуральное число."
+                } else {
+                    // 1. Вычисляем факториал n! с помощью цикла for
+                    var factorial: Long = 1
+                    for (i in 1..n) {
+                        factorial *= i
+                    }
+
+                    // 2. Ищем три последовательных числа через цикл while
+                    var found = false
+                    var k: Long = 1
+
+                    while (true) {
+                        val product = k * (k + 1) * (k + 2)
+                        if (product == factorial) {
+                            resultText = "Можно!\n$n! = $factorial = $k * ${k + 1} * ${k + 2}"
+                            found = true
+                            break // Выходим из цикла, если нашли
+                        } else if (product > factorial) {
+                            break // Выходим, если перескочили нужное значение
+                        }
+                        k++
+                    }
+
+                    if (!found) {
+                        resultText = "Нельзя! Факториал $factorial не представляется в виде произведения 3-х последовательных чисел."
+                    }
+                }
             },
             modifier = Modifier.padding(vertical = 16.dp)
         ) {
